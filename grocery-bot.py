@@ -67,7 +67,6 @@ def send_results(date, store, details, url):
     print(message)
 
 def main():
-    print(f"[{datetime.now()}]: --- Checking for Instacart Pickup Time Availability --") 
 
     for item in config.stores:
 
@@ -75,6 +74,8 @@ def main():
         name = item["name"]
         baseUrl = item["baseUrl"]
         sessionCookie = item["sessionCookie"]
+
+        print(f"[{datetime.now()}]: --- Checking for Grocery pickup availability at: {name} --") 
 
         conn = http.client.HTTPSConnection(baseUrl)
         payload = ''
@@ -85,7 +86,6 @@ def main():
             reqUrl = f"/v3/containers/{store}/next_gen/retailer_information/content/pickup?source=web"
 
             headers = {
-                'Referer': 'https://www.hannaford.com/checkout/retrieve_pickup_timeslots.cmd',
                 'Cookie': sessionCookie
             }
 
@@ -102,8 +102,8 @@ def main():
                 # 'icon_info' means Pickup options are listed into second list available in "modules" section
                 if api_result == 'error':
                     # Do Nothing!
-                    print(pprint.pformat(json_data["container"]["modules"][0]['data']['title']))
-                    print("No Pickup times are available! Let's check again in 5 minutes!")
+                    #print(pprint.pformat(json_data["container"]["modules"][0]['data']['title']))
+                    print("No Pickup times are available! Let's check again in 10 minutes!")
 
                 if api_result == 'icon_info':
                     print('Pickup Time Windows available, Send Alert!')
@@ -119,16 +119,12 @@ def main():
 
                             Pickup_window_details.append(option["full_window"])
                     
-                    print(Pickup_window_details)
+                    #print(Pickup_window_details)
 
                     send_results(datetime.now(), name, Pickup_window_details, storeUrl)
 
             else:
                 print(f'Error Code: {res.status}')
-
-
-        print("-- End of Checking on Instacart Pickup Time Availability --") 
-
      
         if store == "hannaford":
             storeUrl = "http://" + baseUrl
@@ -151,13 +147,11 @@ def main():
                     #print(day)
                     date = day["date"]
 
-                    print('date:', date)
+                    #print('Checking date:', date)
 
                     if len(day["pickupTimes"]) > 0:
 
                         for pickupTime in day["pickupTimes"]:
-
-                            Pickup_window_details.append(date + " " + pickupTime["timeSlot"])
 
                             if pickupTime["shortMessage"] != 'Unavailable':
                                 print('Found a slot:', pickupTime)
@@ -171,7 +165,7 @@ def main():
             else:
                 print(f'Error Code: {res.status}')
             
-
+        print("-- End of Checking on Instacart Pickup Time Availability --") 
 
 # Reference Implementation: https://github.com/utkuufuk/ping-sm/blob/master/__main__.py
 # https://utkuufuk.com/2020/03/28/grocery-scraping/
