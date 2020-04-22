@@ -1,5 +1,4 @@
 import http.client
-import pprint
 import json
 from datetime import datetime
 import os
@@ -74,8 +73,9 @@ def main():
         name = item["name"]
         baseUrl = item["baseUrl"]
         sessionCookie = item["sessionCookie"]
+        time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
-        print(f"[{datetime.now()}]: --- Checking for Grocery pickup availability at: {name} --") 
+        print(time + ": -- Checking for Grocery pickup availability at: " + name + " --") 
 
         conn = http.client.HTTPSConnection(baseUrl)
         payload = ''
@@ -83,7 +83,7 @@ def main():
 
         if store == "market-32":
             storeUrl = "https://www.instacart.com/store/" + store + "/storefront"
-            reqUrl = f"/v3/containers/{store}/next_gen/retailer_information/content/pickup?source=web"
+            reqUrl = "/v3/containers/" + store + "/next_gen/retailer_information/content/pickup?source=web"
 
             headers = {
                 'Cookie': sessionCookie
@@ -101,8 +101,7 @@ def main():
                 # 'error' means no Pickup times are available!
                 # 'icon_info' means Pickup options are listed into second list available in "modules" section
                 if api_result == 'error':
-                    # Do Nothing!
-                    #print(pprint.pformat(json_data["container"]["modules"][0]['data']['title']))
+                    # Do Nothing!)
                     print("No Pickup times are available! Let's check again in 10 minutes!")
 
                 if api_result == 'icon_info':
@@ -121,7 +120,7 @@ def main():
                     
                     #print(Pickup_window_details)
 
-                    send_results(datetime.now(), name, Pickup_window_details, storeUrl)
+                    send_results(time, name, Pickup_window_details, storeUrl)
 
             else:
                 print(f'Error Code: {res.status}')
@@ -161,7 +160,7 @@ def main():
                     print("No Pickup times are available! Let's check again in 10 minutes!")
                 else:
                     print('Pickup Time Windows available, Send Alert!')
-                    send_results(datetime.now(), name, Pickup_window_details, storeUrl)
+                    send_results(time, name, Pickup_window_details, storeUrl)
             else:
                 print(f'Error Code: {res.status}')
             
