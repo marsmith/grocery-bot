@@ -123,7 +123,7 @@ def main():
                     send_results(time, name, Pickup_window_details, storeUrl)
 
             else:
-                print(f'Error Code: {res.status}')
+                print('Error Code: ' + res.status)
      
         if store == "hannaford":
             storeUrl = "http://" + baseUrl
@@ -162,7 +162,7 @@ def main():
                     print('Pickup Time Windows available, Send Alert!')
                     send_results(time, name, Pickup_window_details, storeUrl)
             else:
-                print(f'Error Code: {res.status}')
+                print('Error Code: ' + res.status)
             
         print("-- End of Checking on Instacart Pickup Time Availability --") 
 
