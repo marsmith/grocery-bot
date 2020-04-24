@@ -5,7 +5,7 @@ import os
 import sys
 import config
 
-def sendEmail(text):
+def sendEmail(emailList, subject, text):
     #https://www.geeksforgeeks.org/send-mail-attachment-gmail-account-using-python/
 
     # Python code to illustrate Sending mail with attachments 
@@ -20,7 +20,10 @@ def sendEmail(text):
     import secrets
 
     fromaddr = "martynjsmith@gmail.com"
-    toaddr = "martynjsmith@gmail.com"
+    #toaddr = "martynjsmith@gmail.com"
+    toaddr = ", ".join(emailList)
+
+    print('email List:', toaddr)
 
     # instance of MIMEMultipart 
     msg = MIMEMultipart() 
@@ -29,10 +32,10 @@ def sendEmail(text):
     msg['From'] = fromaddr 
 
     # storing the receivers email address  
-    msg['To'] = toaddr 
+    msg['To'] = toaddr
 
     # storing the subject  
-    msg['Subject'] = "Grocery Pickup Slot Found"
+    msg['Subject'] = subject
 
     # string to store the body of the mail 
     body = text
@@ -58,11 +61,12 @@ def sendEmail(text):
     # terminating the session 
     s.quit() 
 
-def send_results(date, store, details, url):
+def send_results(date, store, details, url, emailList):
     message = "On {}, found available pickup slots at {}: \r\nReserve now at: {}".format(date, store, url)
     for slot in details:
         message += "\r\nSlot: " + slot
-    sendEmail(message)
+    subject = '[grocery-bot] Pickup slot found at: ' + store
+    sendEmail(emailList, subject, message)
     print(message)
 
 def main():
@@ -73,6 +77,7 @@ def main():
         name = item["name"]
         baseUrl = item["baseUrl"]
         sessionCookie = item["sessionCookie"]
+        emailList = item["emailList"]
         time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
         print(time + ": -- Checking for Grocery pickup availability at: " + name + " --") 
@@ -81,8 +86,14 @@ def main():
         payload = ''
 
 
-        if store == "market-32":
-            storeUrl = "https://www.instacart.com/store/" + store + "/storefront"
+        #method for instacart stores
+        if store == "market-32" or store == "price-chopper-ny":
+
+            if store == "market-32":
+                storeUrl = "https://www.instacart.com/store/" + store + "/storefront"
+            if store == "price-chopper-ny":
+                storeUrl = "https://shop.pricechopper.com/checkout/v2/cart"
+
             reqUrl = "/v3/containers/" + store + "/next_gen/retailer_information/content/pickup?source=web"
 
             headers = {
@@ -120,10 +131,10 @@ def main():
                     
                     #print(Pickup_window_details)
 
-                    send_results(time, name, Pickup_window_details, storeUrl)
+                    send_results(time, name, Pickup_window_details, storeUrl, emailList)
 
             else:
-                print('Error Code: ' + res.status)
+                print('Error Code: ' + str(res.status))
      
         if store == "hannaford":
             storeUrl = "http://" + baseUrl
@@ -160,9 +171,9 @@ def main():
                     print("No Pickup times are available! Let's check again in 10 minutes!")
                 else:
                     print('Pickup Time Windows available, Send Alert!')
-                    send_results(time, name, Pickup_window_details, storeUrl)
+                    send_results(time, name, Pickup_window_details, storeUrl, emailList)
             else:
-                print('Error Code: ' + res.status)
+                print('Error Code: ' + str(res.status))
             
         print("-- End of Checking on Instacart Pickup Time Availability --") 
 
