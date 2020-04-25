@@ -16,14 +16,14 @@ stores = [
     },
     {
     "name": "East Greenbush Market 32",
-    "emailList" : ["martynjsmith@gmail.com"],
+    "emailList" : ["martynjsmith@gmail.com", "holligan.joseph@gmail.com"],
     "type": "market-32",
     "baseUrl": "www.instacart.com",
     "sessionCookie": "_instacart_session=UGJ6OHp5cUVndG1WMW1DbjUySlhnalNzbHY0bk5pZDJTY0dlNG41eGljZmVSV1dLTXhMcGVnQUs5aDRMamNVNHA2SWEzZTBoMWhCSVp1R21HVjE4Tnk0bTc3K3pnNmxVTi9LWmIyUU5BaHMxbE5xZ1NaUjVDdVd4VFRzcjRZaDNkSnMxN0FiWi9nbGd0VTAwRVhRY0JKMzJFM3hQME8zcm9ydGZYSVRmdU03OCs5b3p3WlFoSmpYQitBbzNaVmxCVjJlMy9YZjJhMTRJTUtVcTBhdzBCOVNFTkQ3dDdYYk55VlpLdVpNZWY1VDUrdUFXTG1ncUtWN2hMWnYyd0VwRkQ1Mm01WGQxWEhwMm5ub0EwTDdoTzRyNUZxR254SXE5TDhlcVQ3Zi9JdTQwa3JpVDgxT3pKMkFoYkhFOXNwU09tbUJnbXkwSE1qZ2t5ZVBPSFZZZlJiY1JEMkdwMk1HaDlQR3M2MHhGS2dtampBcURQQXZnYml5a2paRkN0U0NYdVhXbTFCSVRuRU9iRWMyOFZFNHdBUT09LS1DYmphenI1VWwxRnhBeGVTYUwzYitRPT0%3D--f9c3183c979b7f3b46639e165b1d407adcf7e08d; Path=/; Domain=.instacart.com; Secure; HttpOnly;"
     },
     {
     "name": "East Greenbush Hannaford",
-    "emailList" : ["martynjsmith@gmail.com"],
+    "emailList" : ["martynjsmith@gmail.com", "holligan.joseph@gmail.com"],
     "type": "hannaford",
     "baseUrl": "www.hannaford.com",
     "sessionCookie": "PIPELINE_SESSION_ID=bc5b137e62784c76aabdd601d8473bc4;"
