@@ -65,7 +65,7 @@ def send_results(date, store, details, url, emailList):
     message = "On {}, found available pickup slots at {}: \r\nReserve now at: {}".format(date, store, url)
     for slot in details:
         message += "\r\nSlot: " + slot
-    subject = '[grocery-bot] Pickup slot found at: ' + store
+    subject = '[grocery-bot] ' + store + ' slot available'
     sendEmail(emailList, subject, message)
     print(message)
 
